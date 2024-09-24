@@ -4,9 +4,11 @@ trigger:
 - main
 steps:
   - task: TerraformInstaller@1
+    displayName: terraformInstaller
     inputs:
       terraformVersion: 'latest'
   - task: TerraformTaskV4@4
+    displayName: terraformInIt
     inputs:
       provider: 'azurerm'
       command: 'init'
@@ -16,16 +18,19 @@ steps:
       backendAzureRmContainerName: 'pipelinecontainer'
       backendAzureRmKey: 'test.terraform.tfstate'
   - task: TerraformTaskV4@4
+    displayName: terraformValidate
     inputs:
       provider: 'azurerm'
       command: 'validate'
   - task: TerraformTaskV4@4
+    displayName: terraformPlan
     inputs:
       provider: 'azurerm'
       command: 'plan'
       environmentServiceNameAzureRM: 'avinashsc'
   - task: TerraformTaskV4@4
+    displayName: terraformApply
     inputs:
       provider: 'azurerm'
-      command: 'apply'
+      command: 'destroy'
       environmentServiceNameAzureRM: 'avinashsc'
