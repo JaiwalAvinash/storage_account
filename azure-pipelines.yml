@@ -1,0 +1,31 @@
+name: TerraformPipeline
+pool: testpool
+trigger: 
+- main
+steps:
+  - task: TerraformInstaller@1
+    inputs:
+      terraformVersion: 'latest'
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'init'
+      backendServiceArm: 'avinashsc'
+      backendAzureRmResourceGroupName: 'avinash-rg'
+      backendAzureRmStorageAccountName: 'pipelinestorageavinash'
+      backendAzureRmContainerName: 'pipelinecontainer'
+      backendAzureRmKey: 'test.terraform.tfstate'
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'validate'
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'plan'
+      environmentServiceNameAzureRM: 'avinashsc'
+  - task: TerraformTaskV4@4
+    inputs:
+      provider: 'azurerm'
+      command: 'apply'
+      environmentServiceNameAzureRM: 'avinashsc'
